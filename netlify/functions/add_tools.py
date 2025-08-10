@@ -7,6 +7,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
 from datetime import datetime
 import re
+import cgi # Import the cgi module
 
 # MongoDB connection - using standard environment variable names
 MONGODB_URI = os.environ.get('MONGODB_URI') or os.environ.get('MONGO_URI', 'mongodb+srv://root:root12345@cluster0.mongodb.net/ai_tools_db?retryWrites=true&w=majority')
@@ -113,10 +114,51 @@ async def handler(event, context):
                 })
             }
         
-        # Decode base64 body
+        # Get content type header
+        content_type_header = headers.get('content-type') or headers.get('Content-Type')
+        if not content_type_header or not content_type_header.startswith('multipart/form-data'):
+            return {
+                'statusCode': 400,
+                'headers': {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
+                'body': json.dumps({
+                    'error': 'Bad Request',
+                    'detail': 'Content-Type must be multipart/form-data'
+                })
+            }
+
+        # Decode body if it's base64 encoded
+        if event.get('isBase64Encoded', False):
+            body_bytes = base64.b64decode(event['body'])
+        else:
+            body_bytes = event['body'].encode('utf-8') # Ensure it's bytes
+
+        # Use cgi.FieldStorage to parse the multipart data
+        # Create a file-like object from the body bytes
+        body_stream = io.BytesIO(body_bytes)
+
+        # Mock a 'environ' dictionary for cgi.FieldStorage
+        environ = {
+            'REQUEST_METHOD': 'POST',
+            'CONTENT_TYPE': content_type_header,
+            'CONTENT_LENGTH': str(len(body_bytes)),
+        }
+        
+        # cgi.FieldStorage expects sys.stdin, so we need to redirect it temporarily
+        import sys
+        original_stdin = sys.stdin
+        sys.stdin = body_stream
+
         try:
-            body = base64.b64decode(event['body'])
-        except:
+            form = cgi.FieldStorage(fp=body_stream, environ=environ, keep_blank_values=1)
+        finally:
+            sys.stdin = original_stdin # Restore stdin
+
+        file_item = form.get('file') # 'file' is the name of the input in frontend FormData
+        
+        if not file_item or not file_item.file:
             return {
                 'statusCode': 400,
                 'headers': {
@@ -125,48 +167,12 @@ async def handler(event, context):
                 },
                 'body': json.dumps({
                     'error': 'Bad Request',
-                    'detail': 'Invalid request body'
+                    'detail': 'No file content found in upload'
                 })
             }
         
-        # Simple multipart parsing (for basic file upload)
-        body_str = body.decode('utf-8', errors='ignore')
-        
-        # Extract file content and filename
-        file_content = None
-        filename = None
-        
-        # Look for file content between boundaries
-        parts = body_str.split('------')
-        for part in parts:
-            if 'filename=' in part and 'Content-Type:' in part:
-                lines = part.split('\n')
-                for i, line in enumerate(lines):
-                    if 'filename=' in line:
-                        # Extract filename
-                        filename_match = re.search(r'filename="([^"]+)"', line)
-                        if filename_match:
-                            filename = filename_match.group(1)
-                    elif line.strip() == '' and i < len(lines) - 1:
-                        # Content starts after empty line
-                        file_content = '\n'.join(lines[i+1:]).strip()
-                        # Remove trailing boundary markers
-                        file_content = re.sub(r'------.*$', '', file_content, flags=re.MULTILINE).strip()
-                        break
-                break
-        
-        if not file_content or not filename:
-            return {
-                'statusCode': 400,
-                'headers': {
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*'
-                },
-                'body': json.dumps({
-                    'error': 'Bad Request',
-                    'detail': 'Could not extract file content'
-                })
-            }
+        file_content = file_item.file.read().decode('utf-8')
+        filename = file_item.filename
         
         # Parse file based on extension
         tools = []
