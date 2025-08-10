@@ -1,13 +1,12 @@
 import json
 import os
-from urllib.parse import parse_qs
 from motor.motor_asyncio import AsyncIOMotorClient
 import asyncio
 from datetime import datetime
 import re
 
 # MongoDB connection - using standard environment variable names
-MONGODB_URI = os.environ.get('MONGODB_URI') or os.environ.get('MONGO_URI', 'mongodb+srv://root:root12345@cluster0.mongodb.net/ai_tools_db?retryWrites=true&w=majority')
+MONGODB_URI = os.environ.get('MONGODB_URI', 'mongodb+srv://root:root12345@cluster0.mongodb.net/ai_tools_db?retryWrites=true&w=majority')
 client = None
 
 async def get_db_client():

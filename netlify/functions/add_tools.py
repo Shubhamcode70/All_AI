@@ -69,41 +69,6 @@ def parse_json(file_content):
     except json.JSONDecodeError as e:
         raise ValueError(f"Invalid JSON format: {str(e)}")
 
-def parse_xlsx(file_content):
-    """Parse XLSX file content"""
-    try:
-        import openpyxl
-        from io import BytesIO
-        
-        workbook = openpyxl.load_workbook(BytesIO(file_content))
-        sheet = workbook.active
-        
-        # Get header row
-        headers = []
-        for cell in sheet[1]:
-            if cell.value:
-                headers.append(str(cell.value).strip())
-        
-        if not headers:
-            raise ValueError("No headers found in XLSX file")
-        
-        # Get data rows
-        tools = []
-        for row in sheet.iter_rows(min_row=2, values_only=True):
-            if any(cell is not None for cell in row):  # Skip empty rows
-                tool = {}
-                for i, value in enumerate(row):
-                    if i < len(headers) and value is not None:
-                        tool[headers[i]] = str(value).strip()
-                if tool:
-                    tools.append(tool)
-        
-        return tools
-    except ImportError:
-        raise ValueError("openpyxl library not available for XLSX parsing")
-    except Exception as e:
-        raise ValueError(f"Invalid XLSX format: {str(e)}")
-
 async def handler(event, context):
     try:
         # Handle CORS preflight
@@ -212,17 +177,6 @@ async def handler(event, context):
                 tools = parse_csv(file_content)
             elif filename_lower.endswith('.json'):
                 tools = parse_json(file_content)
-            elif filename_lower.endswith('.xlsx'):
-                # For XLSX, we need binary content
-                file_content_binary = base64.b64decode(event['body'])
-                # Extract binary content from multipart
-                boundary_start = file_content_binary.find(b'\r\n\r\n')
-                boundary_end = file_content_binary.rfind(b'\r\n------')
-                if boundary_start != -1 and boundary_end != -1:
-                    binary_content = file_content_binary[boundary_start+4:boundary_end]
-                    tools = parse_xlsx(binary_content)
-                else:
-                    raise ValueError("Could not extract XLSX binary content")
             else:
                 return {
                     'statusCode': 400,
@@ -232,7 +186,7 @@ async def handler(event, context):
                     },
                     'body': json.dumps({
                         'error': 'Bad Request',
-                        'detail': 'Unsupported file format. Use CSV, JSON, or XLSX.'
+                        'detail': 'Unsupported file format. Use CSV or JSON.'
                     })
                 }
         except ValueError as e:

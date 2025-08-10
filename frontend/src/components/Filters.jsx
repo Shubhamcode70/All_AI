@@ -1,4 +1,5 @@
 "use client"
+
 import { Filter, ArrowUpDown } from "lucide-react"
 
 const Filters = ({ categories, selectedCategory, onCategoryChange, sortBy, onSortChange }) => {

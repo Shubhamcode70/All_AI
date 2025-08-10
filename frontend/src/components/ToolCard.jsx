@@ -1,4 +1,5 @@
 "use client"
+
 import { ExternalLink, Heart } from "lucide-react"
 
 const categoryColors = {

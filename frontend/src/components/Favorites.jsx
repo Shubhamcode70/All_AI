@@ -1,4 +1,5 @@
 "use client"
+
 import { Heart, ExternalLink } from "lucide-react"
 
 const Favorites = ({ favorites, onToggleFavorite }) => {
