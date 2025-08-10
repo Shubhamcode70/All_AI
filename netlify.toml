@@ -6,6 +6,8 @@
 [build.environment]
   NODE_VERSION = "18"
   PYTHON_VERSION = "3.9"
+  # Explicitly disable the Next.js plugin
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
 
 [functions]
   node_bundler = "esbuild"
