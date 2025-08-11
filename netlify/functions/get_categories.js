@@ -1,10 +1,26 @@
 const { MongoClient } = require("mongodb")
 
-// MongoDB connection - established outside handler for reuse
-const uri =
-  process.env.MONGODB_URI || "mongodb+srv://root:root12345@cluster0.mongodb.net/ai_tools_db?retryWrites=true&w=majority"
-const client = new MongoClient(uri)
-const clientPromise = client.connect()
+let cachedClient = null
+
+async function connectToDatabase() {
+  if (cachedClient) {
+    return cachedClient
+  }
+
+  const uri =
+    process.env.MONGODB_URI ||
+    "mongodb+srv://root:root12345@cluster0.mongodb.net/ai_tools_db?retryWrites=true&w=majority"
+  const client = new MongoClient(uri)
+
+  try {
+    await client.connect()
+    cachedClient = client
+    return client
+  } catch (error) {
+    console.error("MongoDB connection error:", error)
+    throw error
+  }
+}
 
 exports.handler = async (event, context) => {
   try {
@@ -22,7 +38,7 @@ exports.handler = async (event, context) => {
     }
 
     // Connect to database
-    const client = await clientPromise
+    const client = await connectToDatabase()
     const db = client.db("ai_tools_db")
     const collection = db.collection("tools")
 
@@ -37,8 +53,6 @@ exports.handler = async (event, context) => {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "GET, OPTIONS",
       },
       body: JSON.stringify({
         categories: categories,

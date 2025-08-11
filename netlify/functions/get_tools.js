@@ -1,10 +1,26 @@
 const { MongoClient } = require("mongodb")
 
-// MongoDB connection - established outside handler for reuse
-const uri =
-  process.env.MONGODB_URI || "mongodb+srv://root:root12345@cluster0.mongodb.net/ai_tools_db?retryWrites=true&w=majority"
-const client = new MongoClient(uri)
-const clientPromise = client.connect()
+let cachedClient = null
+
+async function connectToDatabase() {
+  if (cachedClient) {
+    return cachedClient
+  }
+
+  const uri =
+    process.env.MONGODB_URI ||
+    "mongodb+srv://root:root12345@cluster0.mongodb.net/ai_tools_db?retryWrites=true&w=majority"
+  const client = new MongoClient(uri)
+
+  try {
+    await client.connect()
+    cachedClient = client
+    return client
+  } catch (error) {
+    console.error("MongoDB connection error:", error)
+    throw error
+  }
+}
 
 exports.handler = async (event, context) => {
   try {
@@ -23,7 +39,6 @@ exports.handler = async (event, context) => {
 
     // Parse query parameters
     const queryParams = event.queryStringParameters || {}
-
     const page = Number.parseInt(queryParams.page || "1")
     const search = (queryParams.search || "").trim()
     const category = (queryParams.category || "").trim()
@@ -34,7 +49,7 @@ exports.handler = async (event, context) => {
     const skip = (page - 1) * perPage
 
     // Connect to database
-    const client = await clientPromise
+    const client = await connectToDatabase()
     const db = client.db("ai_tools_db")
     const collection = db.collection("tools")
 
@@ -55,9 +70,9 @@ exports.handler = async (event, context) => {
     // Build sort criteria
     let sortCriteria = {}
     if (sortBy === "name") {
-      sortCriteria = { name: 1 } // A-Z
+      sortCriteria = { name: 1 }
     } else {
-      sortCriteria = { createdAt: -1 } // Most recent first
+      sortCriteria = { createdAt: -1 }
     }
 
     // Get total count for pagination
@@ -78,8 +93,6 @@ exports.handler = async (event, context) => {
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "GET, OPTIONS",
       },
       body: JSON.stringify({
         tools: cleanTools,
