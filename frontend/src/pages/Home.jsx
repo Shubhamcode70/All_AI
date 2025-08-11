@@ -24,16 +24,15 @@ const Home = () => {
   useEffect(() => {
     const savedFavorites = JSON.parse(localStorage.getItem("favorites") || "[]")
     setFavorites(savedFavorites)
-    const savedDarkMode = localStorage.getItem("darkMode")
-    const isDarkMode = savedDarkMode === "true"
-    setDarkMode(isDarkMode)
 
-    if (isDarkMode) {
+    const savedDarkMode = localStorage.getItem("darkMode") === "true"
+    setDarkMode(savedDarkMode)
+
+    // Apply dark mode immediately
+    if (savedDarkMode) {
       document.documentElement.classList.add("dark")
-      document.body.classList.add("dark")
     } else {
       document.documentElement.classList.remove("dark")
-      document.body.classList.remove("dark")
     }
   }, [])
 
@@ -124,10 +123,8 @@ const Home = () => {
 
     if (newDarkMode) {
       document.documentElement.classList.add("dark")
-      document.body.classList.add("dark")
     } else {
       document.documentElement.classList.remove("dark")
-      document.body.classList.remove("dark")
     }
   }
 
