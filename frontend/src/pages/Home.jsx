@@ -6,7 +6,7 @@ import ToolCard from "../components/ToolCard"
 import SearchBar from "../components/SearchBar"
 import Filters from "../components/Filters"
 import Favorites from "../components/Favorites"
-import { ChevronLeft, ChevronRight, Settings } from "lucide-react"
+import { ChevronLeft, ChevronRight, Settings, Sun, Moon } from "lucide-react"
 
 const Home = () => {
   const [tools, setTools] = useState([])
@@ -19,10 +19,16 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [favorites, setFavorites] = useState([])
+  const [darkMode, setDarkMode] = useState(false)
 
   useEffect(() => {
     const savedFavorites = JSON.parse(localStorage.getItem("favorites") || "[]")
     setFavorites(savedFavorites)
+    const savedDarkMode = localStorage.getItem("darkMode") === "true"
+    setDarkMode(savedDarkMode)
+    if (savedDarkMode) {
+      document.documentElement.classList.add("dark")
+    }
   }, [])
 
   useEffect(() => {
@@ -105,18 +111,37 @@ const Home = () => {
     return favorites.some((fav) => fav.name === tool.name)
   }
 
+  const toggleDarkMode = () => {
+    const newDarkMode = !darkMode
+    setDarkMode(newDarkMode)
+    localStorage.setItem("darkMode", newDarkMode.toString())
+    if (newDarkMode) {
+      document.documentElement.classList.add("dark")
+    } else {
+      document.documentElement.classList.remove("dark")
+    }
+  }
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 dark:bg-gray-900 min-h-screen">
       <header className="mb-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-4xl font-bold text-gray-900">All-in-One AI Tools Hub</h1>
-          <Link
-            to="/admin"
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            <Settings size={20} />
-            Admin
-          </Link>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">AI Orbit - All-in-One AI Tools</h1>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleDarkMode}
+              className="flex items-center gap-2 px-3 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
+            >
+              {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
+            <Link
+              to="/admin"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              <Settings size={20} />
+              Add Tools
+            </Link>
+          </div>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-4 mb-6">
@@ -137,16 +162,20 @@ const Home = () => {
         <Favorites favorites={favorites} onToggleFavorite={toggleFavorite} />
       </header>
 
-      {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">{error}</div>}
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6 dark:bg-red-900 dark:border-red-700 dark:text-red-300">
+          {error}
+        </div>
+      )}
 
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="bg-white rounded-lg shadow-md p-6 animate-pulse">
-              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-              <div className="h-3 bg-gray-200 rounded w-full mb-2"></div>
-              <div className="h-3 bg-gray-200 rounded w-2/3 mb-4"></div>
-              <div className="h-6 bg-gray-200 rounded w-1/3"></div>
+            <div key={i} className="bg-white rounded-lg shadow-md p-6 animate-pulse dark:bg-gray-800">
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2 dark:bg-gray-700"></div>
+              <div className="h-3 bg-gray-200 rounded w-full mb-2 dark:bg-gray-700"></div>
+              <div className="h-3 bg-gray-200 rounded w-2/3 mb-4 dark:bg-gray-700"></div>
+              <div className="h-6 bg-gray-200 rounded w-1/3 dark:bg-gray-700"></div>
             </div>
           ))}
         </div>
@@ -165,7 +194,7 @@ const Home = () => {
 
           {tools.length === 0 && !loading && (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No tools found matching your criteria.</p>
+              <p className="text-gray-500 text-lg dark:text-gray-400">No tools found matching your criteria.</p>
             </div>
           )}
 
@@ -174,20 +203,20 @@ const Home = () => {
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700"
               >
                 <ChevronLeft size={20} />
                 Previous
               </button>
 
-              <span className="text-gray-600">
+              <span className="text-gray-600 dark:text-gray-400">
                 Page {currentPage} of {totalPages}
               </span>
 
               <button
                 onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                 disabled={currentPage === totalPages}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-800 dark:border-gray-600 dark:hover:bg-gray-700"
               >
                 Next
                 <ChevronRight size={20} />

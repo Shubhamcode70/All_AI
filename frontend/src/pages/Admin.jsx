@@ -88,10 +88,10 @@ const Admin = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
+    <div className="container mx-auto px-4 py-8 max-w-2xl dark:bg-gray-900 min-h-screen">
       <header className="mb-8">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-4xl font-bold text-gray-900">Admin Panel</h1>
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">Upload File</h1>
           <Link
             to="/"
             className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
@@ -100,37 +100,37 @@ const Admin = () => {
             Home
           </Link>
         </div>
-        <p className="text-gray-600">Upload AI tools in bulk using CSV, JSON, or XLSX files.</p>
+        <p className="text-gray-600 dark:text-gray-300">Upload AI tools in bulk using CSV, JSON, or XLSX files.</p>
       </header>
 
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="admin-secret" className="block text-sm font-medium text-gray-700 mb-2">
-              Admin Secret
+            <label htmlFor="admin-secret" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              Valid Key
             </label>
             <input
               id="admin-secret"
               type="password"
               value={adminSecret}
               onChange={(e) => setAdminSecret(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Enter admin secret"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white"
+              placeholder="Enter Key"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="file-input" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="file-input" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Upload File
             </label>
-            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-gray-400 transition-colors">
+            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md hover:border-gray-400 dark:hover:border-gray-500 transition-colors">
               <div className="space-y-1 text-center">
-                <Upload className="mx-auto h-12 w-12 text-gray-400" />
-                <div className="flex text-sm text-gray-600">
+                <Upload className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" />
+                <div className="flex text-sm text-gray-600 dark:text-gray-400">
                   <label
                     htmlFor="file-input"
-                    className="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
+                    className="relative cursor-pointer bg-white dark:bg-gray-800 rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500"
                   >
                     <span>Upload a file</span>
                     <input
@@ -143,8 +143,10 @@ const Admin = () => {
                   </label>
                   <p className="pl-1">or drag and drop</p>
                 </div>
-                <p className="text-xs text-gray-500">CSV, JSON, or XLSX files only</p>
-                {file && <p className="text-sm text-green-600 font-medium">Selected: {file.name}</p>}
+                <p className="text-xs text-gray-500 dark:text-gray-400">CSV, JSON, or XLSX files only</p>
+                {file && (
+                  <p className="text-sm text-green-600 dark:text-green-400 font-medium">Selected: {file.name}</p>
+                )}
               </div>
             </div>
           </div>
@@ -169,8 +171,8 @@ const Admin = () => {
           <div
             className={`mt-6 p-4 rounded-md flex items-center gap-2 ${
               messageType === "success"
-                ? "bg-green-100 border border-green-400 text-green-700"
-                : "bg-red-100 border border-red-400 text-red-700"
+                ? "bg-green-100 border border-green-400 text-green-700 dark:bg-green-900 dark:border-green-700 dark:text-green-300"
+                : "bg-red-100 border border-red-400 text-red-700 dark:bg-red-900 dark:border-red-700 dark:text-red-300"
             }`}
           >
             {messageType === "success" ? <CheckCircle size={20} /> : <XCircle size={20} />}
@@ -178,9 +180,9 @@ const Admin = () => {
           </div>
         )}
 
-        <div className="mt-8 p-4 bg-gray-50 rounded-md">
-          <h3 className="text-lg font-medium text-gray-900 mb-3">File Format Requirements</h3>
-          <div className="space-y-3 text-sm text-gray-600">
+        <div className="mt-8 p-4 bg-gray-50 dark:bg-gray-700 rounded-md">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">File Format Requirements</h3>
+          <div className="space-y-3 text-sm text-gray-600 dark:text-gray-300">
             <div>
               <strong>Required fields:</strong>
               <ul className="list-disc list-inside ml-4 mt-1">
