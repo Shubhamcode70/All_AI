@@ -23,8 +23,8 @@ git push origin main
 In Netlify Dashboard → Site Settings → Environment Variables, add:
 
 \`\`\`
-MONGODB_URI=mongodb+srv://root:root12345@cluster0.mongodb.net/ai_tools_db?retryWrites=true&w=majority
-ADMIN_SECRET=MySuperSecureSecret
+MONGODB_URI=""
+ADMIN_SECRET=""
 NODE_VERSION=18
 PYTHON_VERSION=3.9
 \`\`\`
