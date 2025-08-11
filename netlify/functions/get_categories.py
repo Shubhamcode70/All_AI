@@ -1,19 +1,18 @@
 import json
 import os
-from motor.motor_asyncio import AsyncIOMotorClient
-import asyncio
+from pymongo import MongoClient
 
 # MongoDB connection - using standard environment variable names
 MONGODB_URI = os.environ.get('MONGODB_URI', 'mongodb+srv://root:root12345@cluster0.mongodb.net/ai_tools_db?retryWrites=true&w=majority')
 client = None
 
-async def get_db_client():
+def get_db_client():
     global client
     if client is None:
-        client = AsyncIOMotorClient(MONGODB_URI)
+        client = MongoClient(MONGODB_URI)
     return client
 
-async def handler(event, context):
+def lambda_handler(event, context):
     try:
         # Handle CORS preflight
         if event.get('httpMethod') == 'OPTIONS':
@@ -28,12 +27,12 @@ async def handler(event, context):
             }
 
         # Get database client
-        client = await get_db_client()
+        client = get_db_client()
         db = client.ai_tools_db
         collection = db.tools
         
         # Get distinct categories
-        categories = await collection.distinct('category')
+        categories = collection.distinct('category')
         
         # Sort categories alphabetically
         categories.sort()
@@ -64,6 +63,3 @@ async def handler(event, context):
                 'detail': str(e)
             })
         }
-
-def lambda_handler(event, context):
-    return asyncio.run(handler(event, context))

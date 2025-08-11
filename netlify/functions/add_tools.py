@@ -3,23 +3,22 @@ import os
 import base64
 import csv
 import io
-from motor.motor_asyncio import AsyncIOMotorClient
-import asyncio
+from pymongo import MongoClient
 from datetime import datetime
 import re
-import cgi # Import the cgi module
-import sys # Import sys for stdin redirection
+import cgi
+import sys
 
 # MongoDB connection - using standard environment variable names
 MONGODB_URI = os.environ.get('MONGODB_URI') or os.environ.get('MONGO_URI', 'mongodb+srv://root:root12345@cluster0.mongodb.net/ai_tools_db?retryWrites=true&w=majority')
 ADMIN_SECRET = os.environ.get('ADMIN_SECRET', 'MySuperSecureSecret')
 client = None
 
-async def get_db_client():
+def get_db_client():
     global client
     if client is None:
         print("Attempting to connect to MongoDB...")
-        client = AsyncIOMotorClient(MONGODB_URI)
+        client = MongoClient(MONGODB_URI)
         print("MongoDB client initialized.")
     return client
 
@@ -72,7 +71,7 @@ def parse_json(file_content):
     except json.JSONDecodeError as e:
         raise ValueError(f"Invalid JSON format: {str(e)}")
 
-async def handler(event, context):
+def lambda_handler(event, context):
     print("add_tools function started.")
     try:
         # Handle CORS preflight
@@ -276,7 +275,7 @@ async def handler(event, context):
         
         # Get database client
         print("Connecting to database...")
-        client = await get_db_client()
+        client = get_db_client()
         db = client.ai_tools_db
         collection = db.tools
         
@@ -286,9 +285,9 @@ async def handler(event, context):
         
         print(f"Inserting {len(valid_tools)} valid tools into MongoDB...")
         for tool in valid_tools:
-            existing = await collection.find_one({'name': tool['name']})
+            existing = collection.find_one({'name': tool['name']})
             if not existing:
-                await collection.insert_one(tool)
+                collection.insert_one(tool)
                 added_count += 1
             else:
                 skipped_count += 1
@@ -311,7 +310,7 @@ async def handler(event, context):
     except Exception as e:
         print(f"Error in add_tools: {str(e)}")
         import traceback
-        traceback.print_exc() # Print full traceback to logs
+        traceback.print_exc()
         return {
             'statusCode': 500,
             'headers': {
@@ -323,6 +322,3 @@ async def handler(event, context):
                 'detail': str(e)
             })
         }
-
-def lambda_handler(event, context):
-    return asyncio.run(handler(event, context))
