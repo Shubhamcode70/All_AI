@@ -6,7 +6,7 @@ import ToolCard from "../components/ToolCard"
 import SearchBar from "../components/SearchBar"
 import Filters from "../components/Filters"
 import Favorites from "../components/Favorites"
-import { ChevronLeft, ChevronRight, Settings, Sun, Moon } from "lucide-react"
+import { ChevronLeft, ChevronRight, Settings } from "lucide-react"
 
 const Home = () => {
   const [tools, setTools] = useState([])
@@ -137,13 +137,13 @@ const Home = () => {
               AI Orbit - All AI Apps Hub
             </h1>
             <div className="flex items-center gap-3">
-              <button
+              {/* <button
                 onClick={toggleDarkMode}
                 className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-xl hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
                 <span className="hidden sm:inline">{darkMode ? "Light" : "Dark"}</span>
-              </button>
+              </button> */}
               <Link
                 to="/admin"
                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl hover:scale-105 transition-all duration-200 shadow-lg"
