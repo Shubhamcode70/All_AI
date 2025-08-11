@@ -74,8 +74,8 @@ npm install
 pip install -r netlify/functions/requirements.txt
 
 # Create .env file in root
-echo "MONGODB_URI=mongodb+srv://root:root12345@cluster0.mongodb.net/ai_tools_db?retryWrites=true&w=majority" > .env
-echo "ADMIN_SECRET=MySuperSecureSecret" >> .env
+echo "**" > .env
+echo "ADMIN_SECRET=**" >> .env
 
 # Start development server
 npm install -g netlify-cli
