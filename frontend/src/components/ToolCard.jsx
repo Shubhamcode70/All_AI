@@ -46,7 +46,7 @@ const ToolCard = ({ tool, isFavorite, onToggleFavorite }) => {
 
   return (
     <div
-      className="gradient-card-light dark:gradient-card-dark rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 p-6 cursor-pointer relative group"
+      className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 p-6 cursor-pointer relative group"
       onClick={handleCardClick}
     >
       <button

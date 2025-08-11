@@ -126,7 +126,7 @@ const Home = () => {
   }
 
   return (
-    <div className="min-h-screen dark:bg-transparent">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="container mx-auto px-4 py-8">
         <header className="mb-8">
           <div className="flex justify-between items-center mb-6">
@@ -136,14 +136,14 @@ const Home = () => {
             <div className="flex items-center gap-3">
               <button
                 onClick={toggleDarkMode}
-                className="flex items-center gap-2 px-4 py-2 gradient-card-light dark:gradient-card-dark text-gray-800 dark:text-gray-200 rounded-xl hover:scale-105 transition-all duration-200 shadow-lg"
+                className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-xl hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
                 <span className="hidden sm:inline">{darkMode ? "Light" : "Dark"}</span>
               </button>
               <Link
                 to="/admin"
-                className="flex items-center gap-2 px-4 py-2 gradient-button-primary text-white rounded-xl hover:scale-105 transition-all duration-200 shadow-lg"
+                className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl hover:scale-105 transition-all duration-200 shadow-lg"
               >
                 <Settings size={20} />
                 Add Tools
@@ -170,7 +170,7 @@ const Home = () => {
         </header>
 
         {error && (
-          <div className="gradient-card-light dark:gradient-card-dark border-red-400 dark:border-red-600 text-red-700 dark:text-red-300 px-4 py-3 rounded-xl mb-6 shadow-lg">
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-xl mb-6 shadow-lg">
             {error}
           </div>
         )}
@@ -180,7 +180,7 @@ const Home = () => {
             {[...Array(8)].map((_, i) => (
               <div
                 key={i}
-                className="gradient-card-light dark:gradient-card-dark rounded-xl p-6 animate-pulse shadow-lg"
+                className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 animate-pulse shadow-lg"
               >
                 <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-3/4 mb-2"></div>
                 <div className="h-3 bg-gray-200 dark:bg-gray-600 rounded w-full mb-2"></div>
@@ -213,7 +213,7 @@ const Home = () => {
                 <button
                   onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
-                  className="flex items-center gap-2 px-4 py-2 gradient-card-light dark:gradient-card-dark rounded-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-200 shadow-lg"
+                  className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-200 shadow-lg"
                 >
                   <ChevronLeft size={20} />
                   Previous
@@ -226,7 +226,7 @@ const Home = () => {
                 <button
                   onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
                   disabled={currentPage === totalPages}
-                  className="flex items-center gap-2 px-4 py-2 gradient-card-light dark:gradient-card-dark rounded-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-200 shadow-lg"
+                  className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-xl hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 transition-all duration-200 shadow-lg"
                 >
                   Next
                   <ChevronRight size={20} />
