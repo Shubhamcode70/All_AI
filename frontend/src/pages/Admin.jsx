@@ -108,7 +108,7 @@ const Admin = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="admin-secret" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Valid Key
+                Enter Admin Key
               </label>
               <input
                 id="admin-secret"
