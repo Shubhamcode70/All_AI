@@ -9,7 +9,7 @@ const Filters = ({ categories, selectedCategory, onCategoryChange, sortBy, onSor
   ]
 
   return (
-    <div className="flex gap-3">
+    <div className="flex flex-col sm:flex-row gap-3">
       <div className="relative">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Filter className="h-4 w-4 text-gray-400 dark:text-gray-500" />
@@ -17,7 +17,7 @@ const Filters = ({ categories, selectedCategory, onCategoryChange, sortBy, onSor
         <select
           value={selectedCategory}
           onChange={(e) => onCategoryChange(e.target.value)}
-          className="appearance-none bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl pl-10 pr-8 py-3 text-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent min-w-[140px] shadow-lg transition-all duration-200"
+          className="appearance-none bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl pl-10 pr-8 py-3 text-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent w-full sm:min-w-[140px] shadow-lg transition-all duration-200"
         >
           <option value="">All Categories</option>
           {categories.map((category) => (
@@ -35,7 +35,7 @@ const Filters = ({ categories, selectedCategory, onCategoryChange, sortBy, onSor
         <select
           value={sortBy}
           onChange={(e) => onSortChange(e.target.value)}
-          className="appearance-none bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl pl-10 pr-8 py-3 text-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent min-w-[130px] shadow-lg transition-all duration-200"
+          className="appearance-none bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-xl pl-10 pr-8 py-3 text-sm focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent w-full sm:min-w-[130px] shadow-lg transition-all duration-200"
         >
           {sortOptions.map((option) => (
             <option key={option.value} value={option.value}>
