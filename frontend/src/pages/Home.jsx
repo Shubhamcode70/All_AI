@@ -135,7 +135,7 @@ const Home = () => {
         <header className="mb-8">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent dark:from-blue-400 dark:to-purple-400">
-              AI Orbit - All-in-One AI Tools
+              AI Orbit - All AI Apps Hub
             </h1>
             <div className="flex items-center gap-3">
               {/* <button
