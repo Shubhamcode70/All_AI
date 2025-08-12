@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { Link } from "react-router-dom"
 import ToolCard from "../components/ToolCard"
 import SearchBar from "../components/SearchBar"
@@ -81,20 +81,20 @@ const Home = () => {
     }
   }
 
-  const handleSearch = (term) => {
+  const handleSearch = useCallback((term) => {
     setSearchTerm(term)
     setCurrentPage(1)
-  }
+  }, [])
 
-  const handleCategoryChange = (category) => {
+  const handleCategoryChange = useCallback((category) => {
     setSelectedCategory(category)
     setCurrentPage(1)
-  }
+  }, [])
 
-  const handleSortChange = (sort) => {
+  const handleSortChange = useCallback((sort) => {
     setSortBy(sort)
     setCurrentPage(1)
-  }
+  }, [])
 
   const toggleFavorite = (tool) => {
     const newFavorites = [...favorites]
