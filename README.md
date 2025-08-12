@@ -1,140 +1,62 @@
-# All-in-One AI Tools Hub
+# AI Orbit - All AI Apps Hub
 
-A complete, production-ready AI tools directory web application built with React frontend and Python FastAPI backend, deployed as Netlify serverless functions with MongoDB Atlas database.
+Discover the perfect AI tool for your needs! AI Orbit is a comprehensive directory featuring the latest and most popular AI applications across various categories.
 
-## 🚀 Quick Deploy to Netlify
+## What is AI Orbit?
 
-### 1. Push to GitHub
-\`\`\`bash
-git add .
-git commit -m "Initial commit"
-git push origin main
-\`\`\`
+AI Orbit is your one-stop destination for discovering AI tools. Whether you're looking for chatbots, image generators, productivity tools, or creative assistants, we've curated a collection of the best AI applications available today.
 
-### 2. Deploy to Netlify
-1. Go to [Netlify Dashboard](https://app.netlify.com)
-2. Click "New site from Git"
-3. Connect your GitHub repository
-4. Build settings will be auto-detected from `netlify.toml`
-5. Set environment variables (see below)
-6. Click "Deploy site"
+## Features
 
-### 3. Environment Variables
-In Netlify Dashboard → Site Settings → Environment Variables, add:
+**🔍 Smart Search**
+- Search through hundreds of AI tools by name or description
+- Find exactly what you need with our intelligent search system
 
-\`\`\`
-MONGODB_URI=""
-ADMIN_SECRET=""
-NODE_VERSION=18
-PYTHON_VERSION=3.9
-\`\`\`
+**📂 Category Filters**
+- Browse tools by category: Chatbots, Image Generation, Productivity, and more
+- Filter and sort tools to find the perfect match for your project
 
-## ✅ What's Included
+**⭐ Favorites System**
+- Save your favorite tools for quick access later
+- Keep track of up to 5 tools you use most often
 
-- **Frontend**: React 18 + TailwindCSS + Vite
-- **Backend**: Python FastAPI (Netlify Functions)
-- **Database**: MongoDB Atlas integration
-- **Features**: Search, filters, pagination, favorites, admin upload
-- **Responsive**: Works on desktop, tablet, mobile
-- **Production Ready**: No placeholders, complete functionality
+**📱 Works Everywhere**
+- Fully responsive design that works on desktop, tablet, and mobile
+- Access your favorite AI tools from any device
 
-## 📁 Project Structure
+**🌙 Dark Mode**
+- Comfortable viewing experience with dark theme support
+- Easy on the eyes during long browsing sessions
 
-\`\`\`
-/
-├── frontend/                 # React frontend
-│   ├── src/
-│   │   ├── components/      # React components
-│   │   ├── pages/          # Home and Admin pages
-│   │   └── App.jsx
-│   ├── package.json
-│   └── vite.config.js
-├── netlify/
-│   └── functions/          # Python serverless functions
-│       ├── get_tools.py
-│       ├── get_categories.py
-│       ├── add_tools.py
-│       └── requirements.txt
-├── netlify.toml           # Netlify configuration
-└── README.md
-\`\`\`
+## How to Use
 
-## 🔧 Local Development
+1. **Browse Tools**: Visit the homepage to see all available AI tools
+2. **Search**: Use the search bar to find specific tools or features
+3. **Filter**: Select categories or sort by newest/oldest tools
+4. **Save Favorites**: Click the heart icon on any tool to save it to your favorites
+5. **Explore**: Click on any tool to visit its official website
 
-\`\`\`bash
-# Clone repository
-git clone <your-repo-url>
-cd ai-tools-hub
+## Categories Available
 
-# Install frontend dependencies
-cd frontend
-npm install
+- Chatbots & Conversational AI
+- Image Generation & Editing
+- Content & Copywriting
+- Productivity Tools
+- Code Assistants
+- Audio & Video Tools
+- Research & Analysis
+- And many more!
 
-# Install Python dependencies
-pip install -r netlify/functions/requirements.txt
+## About This Project
 
-# Create .env file in root
-echo "**" > .env
-echo "ADMIN_SECRET=**" >> .env
+AI Orbit was built to help users navigate the rapidly growing landscape of AI tools. With new AI applications launching every day, it can be overwhelming to find the right tool for your specific needs. Our platform makes it easy to discover, compare, and access the best AI tools available.
 
-# Start development server
-npm install -g netlify-cli
-netlify dev
-\`\`\`
+## Contributing
 
-## 📊 Database Schema
+Found an amazing AI tool that's not listed? We're always looking to expand our directory with the latest and greatest AI applications. The platform includes an admin system for adding new tools to keep the directory up-to-date.
 
-\`\`\`json
-{
-  "name": "Tool name (string, required)",
-  "link": "Tool URL starting with https:// (string, required)", 
-  "description": "Tool description (string, max 300 chars, required)",
-  "category": "Category name (string, required)",
-  "createdAt": "ISO 8601 UTC timestamp (string, required)"
-}
-\`\`\`
+---
 
-## 📤 Admin Upload
+**Visit AI Orbit**: [https://allaiapps.fun](https://allaiapps.fun)
 
-1. Navigate to `/admin` on your deployed site
-2. Enter admin secret (from environment variables)
-3. Upload CSV or JSON files
-
-### CSV Example:
-\`\`\`csv
-name,link,description,category
-ChatGPT,https://chat.openai.com,AI-powered conversational assistant,Chatbot
-DALL-E,https://openai.com/dall-e-2,AI image generation tool,Image Generation
-\`\`\`
-
-### JSON Example:
-\`\`\`json
-[
-  {
-    "name": "ChatGPT",
-    "link": "https://chat.openai.com",
-    "description": "AI-powered conversational assistant",
-    "category": "Chatbot"
-  }
-]
-\`\`\`
-
-## 🎯 Features
-
-- **Tool Directory**: Browse all AI tools with responsive grid
-- **Search**: Real-time search by name and description
-- **Filters**: Category filter and sorting options
-- **Favorites**: Save up to 5 favorite tools (localStorage)
-- **Pagination**: 20 tools per page
-- **Admin Panel**: Bulk upload tools via CSV/JSON
-- **Responsive**: 4 columns (desktop), 2 (tablet), 1 (mobile)
-
-## 🔗 API Endpoints
-
-- `GET /api/get_tools` - Get paginated, filtered tools
-- `GET /api/get_categories` - Get all categories
-- `POST /api/add_tools` - Upload tools (admin only)
-
-## 📝 License
-
-This project is ready for production use. Modify as needed for your requirements.
+*Discover. Explore. Create with AI.*
